@@ -1,3 +1,5 @@
+import { IOrder } from 'interfaces/models/IOrder';
+
 export default interface IUserToken {
   id: number;
   email: string;
@@ -5,6 +7,6 @@ export default interface IUserToken {
   lastName?: string;
   roles: string[];
   exp: number;
-
+  orders: IOrder[];
   fullName: string;
 }

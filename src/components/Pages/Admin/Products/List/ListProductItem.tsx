@@ -12,15 +12,8 @@ import Alert from 'components/Shared/Alert';
 import Toast from 'components/Shared/Toast';
 import TableCellActions from 'components/Shared/Pagination/TableCellActions';
 import { IOption } from 'components/Shared/DropdownMenu';
-import productService from 'services/product';
-
-export interface IProduct {
-  id: number;
-  name: string;
-  description: string;
-  value: number;
-  quantity: number;
-}
+import productService from 'services/ProductService';
+import { IProduct } from 'interfaces/models/IProduct';
 
 interface IProps {
   product: IProduct;

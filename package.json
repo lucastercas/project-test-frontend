@@ -51,7 +51,7 @@
     "react-use-observable": "1.0.1",
     "recharts": "1.8.5",
     "rxjs": "6.5.5",
-    "tslib": "1.11.1",
+    "tslib": "^2.1.0",
     "yup": "0.28.4"
   },
   "devDependencies": {

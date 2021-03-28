@@ -9,7 +9,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import DashboardIndexPage from './Dashboard';
 import SamplePage from './Sample';
 import UserIndexPage from './Users';
-import ProductListPage from './Products';
+import ProductListPage from './Products/ProductListPage';
 
 export const ScrollTopContext = React.createContext<Function>(() => {});
 

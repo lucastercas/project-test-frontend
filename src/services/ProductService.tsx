@@ -1,4 +1,4 @@
-import { IProduct } from 'components/Pages/Admin/Products/List/ListProduct';
+import { IProduct } from 'interfaces/models/IProduct';
 import { IPaginationParams } from 'interfaces/pagination';
 import { Observable } from 'rxjs';
 import apiService, { ApiService } from './api';
@@ -15,7 +15,7 @@ export class ProductService {
     return this.apiService.delete(`/app/product/${id}`);
   }
 
-  public save(model: Partial<IProduct>) {
+  public save(model: Partial<IProduct>): Observable<any> {
     return this.apiService.post(`/app/product`, model);
   }
 

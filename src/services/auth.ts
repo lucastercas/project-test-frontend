@@ -1,5 +1,6 @@
 import { cacheClean } from 'helpers/rxjs-operators/cache';
 import { logError } from 'helpers/rxjs-operators/logError';
+import { IOrder } from 'interfaces/models/IOrder';
 import IUserToken from 'interfaces/tokens/userToken';
 import * as Rx from 'rxjs';
 import { catchError, distinctUntilChanged, map, shareReplay, switchMap } from 'rxjs/operators';
@@ -88,6 +89,34 @@ export class AuthService {
 
   public getUser(): Rx.Observable<IUserToken> {
     return this.user$;
+  }
+
+  public addToCart(order: IOrder) {
+    console.log('Adding to cart: ', order);
+    this.getUser()
+      .pipe(
+        map(user => {
+          if (user.orders === undefined) user.orders = [];
+          user.orders.push(order);
+          return user;
+        })
+      )
+      .subscribe(console.log);
+  }
+
+  public getCart(): Rx.Observable<IOrder[]> {
+    return this.user$.pipe(map(user => user.orders));
+  }
+
+  public clearCart() {
+    this.user$
+      .pipe(
+        map(user => {
+          user.orders = [];
+          return user;
+        })
+      )
+      .subscribe();
   }
 
   public canAccess(...roles: string[]): Rx.Observable<boolean> {

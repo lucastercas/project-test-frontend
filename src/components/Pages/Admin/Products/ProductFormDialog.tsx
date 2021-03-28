@@ -2,12 +2,12 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Linear
 import { useFormikObservable } from 'hooks/useFormikObservable';
 import * as yup from 'yup';
 import React, { Fragment, memo, useCallback } from 'react';
-import { IProduct } from './List/ListProduct';
-import productService from 'services/product';
+import productService from 'services/ProductService';
 import TextField from 'components/Shared/Fields/Text';
 import { tap } from 'rxjs/operators';
 import Toast from 'components/Shared/Toast';
 import { logError } from 'helpers/rxjs-operators/logError';
+import { IProduct } from 'interfaces/models/IProduct';
 
 interface IProps {
   opened: boolean;
@@ -16,7 +16,7 @@ interface IProps {
   onCancel: () => void;
 }
 
-const FormDialog = memo((props: IProps) => {
+const ProductFormDialog = memo((props: IProps) => {
   const validationSchema = yup.object().shape({});
 
   const formik = useFormikObservable<IProduct>({
@@ -92,4 +92,4 @@ const FormDialog = memo((props: IProps) => {
   );
 });
 
-export default FormDialog;
+export default ProductFormDialog;

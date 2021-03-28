@@ -4,10 +4,10 @@ import IconButton from '@material-ui/core/IconButton';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import CoreToolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { ShoppingBasket } from '@material-ui/icons';
 import clsx from 'clsx';
 import MenuIcon from 'mdi-react/MenuIcon';
 import React, { memo, Props, useCallback, useContext } from 'react';
+import BuyMenuIcon from './BuyMenuIcon';
 
 import { DrawerContext } from './Drawer/context';
 import UserMenu from './UserMenu';
@@ -77,7 +77,7 @@ const Toolbar = memo((props: IProps) => {
                 </Typography>
               </Grid>
               <IconButton color='inherit' className={classes.iconMenu}>
-                <ShoppingBasket />
+                <BuyMenuIcon />
               </IconButton>
               <Grid item xs={false}>
                 <UserMenu />

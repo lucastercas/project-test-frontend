@@ -1,14 +1,18 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, LinearProgress } from '@material-ui/core';
 import { useFormikObservable } from 'hooks/useFormikObservable';
 import * as yup from 'yup';
-import React, { Fragment, memo } from 'react';
+import React, { Fragment, memo, useCallback } from 'react';
 import { IProduct } from './List/ListProduct';
 import productService from 'services/product';
 import TextField from 'components/Shared/Fields/Text';
+import { tap } from 'rxjs/operators';
+import Toast from 'components/Shared/Toast';
+import { logError } from 'helpers/rxjs-operators/logError';
 
 interface IProps {
   opened: boolean;
   product?: IProduct;
+  onComplete: (product: IProduct) => void;
   onCancel: () => void;
 }
 
@@ -19,14 +23,44 @@ const FormDialog = memo((props: IProps) => {
     initialValues: {},
     validationSchema,
     onSubmit(model) {
-      return productService.save(model).pipe();
+      if (props.product) {
+        return productService.edit(model).pipe(
+          tap(product => {
+            Toast.show(`Produto Atualizado`);
+            props.onComplete(product);
+          }),
+          logError(true)
+        );
+      } else {
+        return productService.save(model).pipe(
+          tap(product => {
+            Toast.show(`Produto Salvo`);
+            props.onComplete(product);
+          }),
+          logError(true)
+        );
+      }
     }
   });
 
+  const handleEnter = useCallback(() => {
+    formik.setValues(props.product ?? formik.initialValues, false);
+  }, [formik, props.product]);
+
+  const handleExit = useCallback(() => {
+    formik.resetForm();
+  }, [formik]);
+
   return (
-    <Dialog open={props.opened} disableBackdropClick disableEscapeKeyDown>
+    <Dialog open={props.opened} onEnter={handleEnter} onExit={handleExit}>
+      {formik.isSubmitting && <LinearProgress color='primary' />}
       <form onSubmit={formik.handleSubmit}>
-        <DialogTitle>Produto </DialogTitle>
+        {formik.values.id ? (
+          <DialogTitle>Editar Produto {props.product.name} </DialogTitle>
+        ) : (
+          <DialogTitle>Novo Produto</DialogTitle>
+        )}
+
         <DialogContent>
           <Fragment>
             <Grid container spacing={2}>

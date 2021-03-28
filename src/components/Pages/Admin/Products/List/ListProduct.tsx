@@ -3,8 +3,10 @@ import React, { memo, useCallback, useMemo, useState } from 'react';
 import { TableCell, TableRow } from '@material-ui/core';
 import DeleteIcon from 'mdi-react/DeleteIcon';
 import EditIcon from 'mdi-react/EditIcon';
+import WalletIcon from 'mdi-react/WalletIcon';
 import { from } from 'rxjs';
 import { filter, switchMap, tap } from 'rxjs/operators';
+import { useCallbackObservable } from 'react-use-observable';
 
 import Alert from 'components/Shared/Alert';
 import Toast from 'components/Shared/Toast';
@@ -17,12 +19,13 @@ export interface IProduct {
   name: string;
   description: string;
   value: number;
+  quantity: number;
 }
 
 interface IProps {
   product: IProduct;
   onEdit: (product: IProduct) => void;
-  onBuy: (product: IProduct) => void
+  onBuy: (product: IProduct) => void;
   onDeleteComplete: () => void;
 }
 
@@ -35,7 +38,7 @@ const ListProduct = memo((props: IProps) => {
 
   const handleDismissError = useCallback(() => setError(null), []);
 
-  const handleDelete = useCallback(() => {
+  const [handleDelete] = useCallbackObservable(() => {
     return from(Alert.confirm(`Excluir produto ${product.name}?`)).pipe(
       filter(ok => ok),
       tap(() => setLoading(true)),
@@ -60,14 +63,14 @@ const ListProduct = memo((props: IProps) => {
   }, [onEdit, product]);
 
   const handleBuy = useCallback(() => {
-    onBuy(product)
-  }, [onBuy, product])
+    onBuy(product);
+  }, [onBuy, product]);
 
   const options = useMemo<IOption[]>(() => {
     return [
       { text: 'Editar', icon: EditIcon, handler: handleEdit },
       { text: 'Excluir', icon: DeleteIcon, handler: handleDelete },
-      { text: 'Comprar', icon: DeleteIcon, handler: handleBuy }
+      { text: 'Comprar', icon: WalletIcon, handler: handleBuy }
     ];
   }, [handleDelete, handleEdit, handleBuy]);
 
@@ -78,6 +81,7 @@ const ListProduct = memo((props: IProps) => {
       <TableCell>{product.name}</TableCell>
       <TableCell>{product.description}</TableCell>
       <TableCell>{product.value}</TableCell>
+      <TableCell>{product.quantity}</TableCell>
       <TableCellActions options={options} loading={loading} error={error} onDismissError={handleDismissError} />
     </TableRow>
   );

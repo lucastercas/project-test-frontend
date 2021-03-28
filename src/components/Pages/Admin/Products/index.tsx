@@ -1,6 +1,16 @@
 import React, { Fragment, memo, useCallback, useState } from 'react';
 import Card from '@material-ui/core/Card';
-import { Table, TableBody, TableCell, TableHead, TablePagination, TableRow } from '@material-ui/core';
+import {
+  Button,
+  CardContent,
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TablePagination,
+  TableRow
+} from '@material-ui/core';
 
 import TableCellSortable from 'components/Shared/Pagination/TableCellSortable';
 import usePaginationObservable from 'hooks/usePagination';
@@ -11,6 +21,7 @@ import Toolbar from 'components/Layout/Toolbar';
 import CardLoader from 'components/Shared/CardLoader';
 import TableWrapper from 'components/Shared/TableWrapper';
 import FormDialog from './FormDialog';
+import SearchField from 'components/Shared/Pagination/SearchField';
 
 const ProductListPage = memo(() => {
   const [formOpened, setFormOpened] = useState(false);
@@ -22,7 +33,10 @@ const ProductListPage = memo(() => {
     []
   );
 
-  // const handleCreate = useCallback(() => {}, []);
+  const handleCreate = useCallback(() => {
+    setCurrentProduct(null);
+    setFormOpened(true);
+  }, []);
 
   const handleEdit = useCallback((product: IProduct) => {
     setCurrentProduct(product);
@@ -36,14 +50,34 @@ const ProductListPage = memo(() => {
   const { total, results } = data || ({ total: 0, results: [] } as typeof data);
 
   const formCancel = useCallback(() => setFormOpened(false), []);
-  const formCallback = () => {};
+  const formCallback = useCallback(
+    (product?: IProduct) => {
+      setFormOpened(false);
+      currentProduct ? refresh() : mergeParams({ term: product.name });
+    },
+    [currentProduct, mergeParams, refresh]
+  );
 
   return (
     <Fragment>
       <Toolbar title='Produtos' />
       <Card>
-        <FormDialog opened={formOpened} product={currentProduct} onCancel={formCancel} />
+        <FormDialog opened={formOpened} product={currentProduct} onCancel={formCancel} onComplete={formCallback} />
         <CardLoader show={loading} />
+
+        <CardContent>
+          <Grid container justify='space-between' alignItems='center' spacing={2}>
+            <Grid item xs={12} sm={6} lg={4}>
+              <SearchField paginationParams={params} onChange={mergeParams} />
+            </Grid>
+
+            <Grid item xs={12} sm={'auto'}>
+              <Button fullWidth variant='contained' color='primary' onClick={handleCreate}>
+                Adicionar
+              </Button>
+            </Grid>
+          </Grid>
+        </CardContent>
 
         <TableWrapper minWidth={500}>
           <Table>
@@ -52,9 +86,12 @@ const ProductListPage = memo(() => {
                 <TableCellSortable paginationParams={params} disabled={loading} column='name' onChange={() => {}}>
                   Nome
                 </TableCellSortable>
-                <TableCell>Descricao</TableCell>
+                <TableCell >Descricao</TableCell>
                 <TableCellSortable paginationParams={params} disabled={loading} column='value' onChange={() => {}}>
                   Valor
+                </TableCellSortable>
+                <TableCellSortable paginationParams={params} disabled={loading} column='quantity' onChange={() => {}}>
+                  Quantidade
                 </TableCellSortable>
               </TableRow>
             </TableHead>

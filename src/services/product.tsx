@@ -1,5 +1,6 @@
 import { IProduct } from 'components/Pages/Admin/Products/List/ListProduct';
 import { IPaginationParams } from 'interfaces/pagination';
+import { Observable } from 'rxjs';
 import apiService, { ApiService } from './api';
 
 export class ProductService {
@@ -7,16 +8,19 @@ export class ProductService {
 
   public list(params: IPaginationParams) {
     const products = this.apiService.get('/app/product', params);
-    console.log(products);
     return products;
   }
 
-  public delete(id: number) {
+  public delete(id: number): Observable<void> {
     return this.apiService.delete(`/app/product/${id}`);
   }
 
   public save(model: Partial<IProduct>) {
     return this.apiService.post(`/app/product`, model);
+  }
+
+  public edit(model: Partial<IProduct>) {
+    return this.apiService.put(`/app/product`, model);
   }
 }
 

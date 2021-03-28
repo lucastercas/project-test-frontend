@@ -7,12 +7,10 @@ const BuyMenuIcon = memo((props: {}) => {
   const [opened, setOpened] = useState(false);
 
   const handleOpen = useCallback(() => {
-    console.log('Opening');
     setOpened(true);
   }, []);
 
   const handleCancel = useCallback(() => {
-    console.log('Closing');
     setOpened(false);
   }, []);
 

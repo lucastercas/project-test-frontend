@@ -63,8 +63,6 @@ const NewPasswordPage = memo((props: IProps) => {
     setLoading(false);
   }, [props.location.search]);
 
-  console.log({ tokenData });
-
   const handleBack = useCallback(() => history.push('/'), [history]);
 
   return (

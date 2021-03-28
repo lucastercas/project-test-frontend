@@ -10,8 +10,10 @@ import authService from 'services/auth';
 import orderService from 'services/OrderService';
 import BuyMenuItem from './BuyMenuItem';
 import Toast from 'components/Shared/Toast';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { logError } from 'helpers/rxjs-operators/logError';
+import EmptyAndErrorMessages from 'components/Shared/Pagination/EmptyAndErrorMessages';
+import IUserToken from 'interfaces/tokens/userToken';
 
 interface IProps {
   opened: boolean;
@@ -23,13 +25,14 @@ const BuyMenuFormDialog = memo((props: IProps) => {
   const [result] = useObservable(() => authService.getCart(), [{}]);
   const data = result || ([] as typeof result);
 
+  const [userId] = useObservable(() => authService.getUser().pipe(map((user: IUserToken) => user.id)), [{}]);
+
   const validationSchema = yup.object().shape({});
   const formik = useFormikObservable<IOrder[]>({
     initialValues: [],
     validationSchema,
     onSubmit(model) {
-      console.log('Submitting: ', model);
-      return orderService.post(model).pipe(
+      return orderService.post(model, userId).pipe(
         tap(() => {
           Toast.show('Compra Feita!');
           props.onComplete();
@@ -38,6 +41,8 @@ const BuyMenuFormDialog = memo((props: IProps) => {
       );
     }
   });
+
+  const handleRefresh = () => {};
 
   const handleEnter = useCallback(() => {
     formik.setValues(data ?? formik.initialValues, false);
@@ -63,6 +68,7 @@ const BuyMenuFormDialog = memo((props: IProps) => {
             </TableHead>
 
             <TableBody>
+              <EmptyAndErrorMessages colSpan={3} hasData={data.length > 0} onTryAgain={handleRefresh} />
               {data.map((order: IOrder, index: number) => (
                 <BuyMenuItem key={index} order={order} />
               ))}

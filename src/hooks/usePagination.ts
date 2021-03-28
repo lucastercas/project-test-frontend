@@ -34,7 +34,6 @@ export default function usePaginationObservable<P extends IPaginationParams, T>(
       )
     );
   }, [params, ...deps]);
-  // console.log('Data: ', data);
 
   return [
     params,

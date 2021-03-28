@@ -92,16 +92,14 @@ export class AuthService {
   }
 
   public addToCart(order: IOrder) {
-    console.log('Adding to cart: ', order);
-    this.getUser()
-      .pipe(
-        map(user => {
-          if (user.orders === undefined) user.orders = [];
-          user.orders.push(order);
-          return user;
-        })
-      )
-      .subscribe(console.log);
+    this.getUser().pipe(
+      map(user => {
+        if (!user) return null;
+        if (user.orders === undefined) user.orders = [];
+        user.orders.push(order);
+        return user;
+      })
+    );
   }
 
   public getCart(): Rx.Observable<IOrder[]> {
@@ -112,6 +110,7 @@ export class AuthService {
     this.user$
       .pipe(
         map(user => {
+          if (!user) return null;
           user.orders = [];
           return user;
         })

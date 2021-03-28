@@ -1,21 +1,20 @@
 import { IOrder } from 'interfaces/models/IOrder';
+import IUserToken from 'interfaces/tokens/userToken';
+import { useObservable } from 'react-use-observable';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import apiService, { ApiService } from './api';
+import authService from './auth';
 
 export class OrderService {
   constructor(private apiService: ApiService) {}
 
   public list() {
-    const orders = this.apiService.get('/app/order');
-    console.log('Orders: ', orders);
-    return orders;
+    return this.apiService.get('/app/order');
   }
 
-  public post(model: Partial<IOrder[]>): Observable<any> {
-    console.log('Posting: ', model);
-    const result = this.apiService.post('/app/order', { userId: 1, products: [...model] });
-    console.log('Result: ', result);
-    return result;
+  public post(model: Partial<IOrder[]>, userId: number): Observable<any> {
+    return this.apiService.post('/app/order', { userId: userId, products: [...model] });
   }
 }
 

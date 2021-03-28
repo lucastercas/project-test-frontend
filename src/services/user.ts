@@ -10,9 +10,7 @@ export class UserService {
   constructor(private apiService: ApiService) {}
 
   public list(params: IPaginationParams): Observable<IPaginationResponse<IUser>> {
-    const results = this.apiService.get('/admin/user', params);
-    console.log('Usuarios: ', results);
-    return results;
+    return this.apiService.get('/admin/user', params);
   }
 
   public current(): Observable<IUser> {

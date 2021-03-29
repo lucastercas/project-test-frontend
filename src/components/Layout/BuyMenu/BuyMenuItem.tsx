@@ -22,6 +22,7 @@ interface IProps {
   removeQuantity: (product: IOrderProduct) => void;
 }
 
+// To-Do: Implementar adicionar e remover quantidade de produto
 const BuyMenuItem = memo((props: IProps) => {
   const classes = useStyles(props);
 

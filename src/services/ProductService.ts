@@ -1,9 +1,7 @@
-import { IOrderProduct } from 'interfaces/models/IOrderProduct';
 import { IProduct } from 'interfaces/models/IProduct';
-import { IPaginationParams } from 'interfaces/pagination';
+import { IPaginationParams, IPaginationResponse } from 'interfaces/pagination';
 import { Observable } from 'rxjs';
 import apiService, { ApiService } from './api';
-
 
 export class ProductService {
   constructor(private apiService: ApiService) {}
@@ -12,9 +10,8 @@ export class ProductService {
     return this.apiService.get(`/app/product/${id}`);
   }
 
-  public list(params: IPaginationParams) {
-    const products = this.apiService.get('/app/product', params);
-    return products;
+  public list(params: IPaginationParams): Observable<IPaginationResponse<IProduct>> {
+    return this.apiService.get('/app/product', params);
   }
 
   public delete(id: number): Observable<void> {
@@ -22,11 +19,11 @@ export class ProductService {
   }
 
   public save(model: Partial<IProduct>): Observable<any> {
-    return this.apiService.post(`/app/product`, model);
+    return this.apiService.post('/app/product', model);
   }
 
   public edit(model: Partial<IProduct>) {
-    return this.apiService.put(`/app/product`, model);
+    return this.apiService.put('/app/product', model);
   }
 }
 

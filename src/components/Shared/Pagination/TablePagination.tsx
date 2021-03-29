@@ -47,7 +47,7 @@ const TablePagination = memo((props: IProps) => {
       <TablePaginationCore
         labelRowsPerPage='items'
         labelDisplayedRows={labelDisplayedRows}
-        rowsPerPageOptions={[10, 25, 50]}
+        rowsPerPageOptions={[5, 10, 25, 50]}
         component={'div' as any}
         {...extra}
         count={total}

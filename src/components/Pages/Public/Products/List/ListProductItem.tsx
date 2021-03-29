@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
-
-import { TableCell, TableRow } from '@material-ui/core';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from 'mdi-react/DeleteIcon';
 import EditIcon from 'mdi-react/EditIcon';
 import WalletIcon from 'mdi-react/WalletIcon';

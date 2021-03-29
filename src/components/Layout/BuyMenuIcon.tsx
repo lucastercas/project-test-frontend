@@ -1,9 +1,10 @@
 import React, { Fragment, memo, useCallback, useState } from 'react';
 import { ShoppingBasket } from '@material-ui/icons';
-import { IconButton } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+
 import BuyMenuFormDialog from './BuyMenu/BuyMenuFormDialog';
 
-const BuyMenuIcon = memo((props: {}) => {
+const BuyMenuIcon = memo(() => {
   const [opened, setOpened] = useState(false);
 
   const handleOpen = useCallback(() => {

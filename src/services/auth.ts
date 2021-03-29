@@ -93,14 +93,23 @@ export class AuthService {
 
   public addToCart(product: IOrderProduct) {
     console.log('Adicionando produto ', product, ' ao carrinho');
-    this.getUser().pipe(
-      map(user => {
-        if (!user) return false;
-        if (user.orders === undefined) user.orders = [];
-        user.orders.push(product);
-        return user;
-      })
-    ).subscribe();
+    this.getUser()
+      .pipe(
+        map(user => {
+          if (!user) return false;
+          if (user.orders === undefined) user.orders = [];
+          let hasProduct = false;
+          for (const order of user.orders) {
+            if (order.productId == product.productId) {
+              order.quantity++;
+              hasProduct = true;
+            }
+          }
+          if (!hasProduct) user.orders.push(product);
+          return user;
+        })
+      )
+      .subscribe();
   }
 
   public getCart(): Rx.Observable<IOrderProduct[]> {

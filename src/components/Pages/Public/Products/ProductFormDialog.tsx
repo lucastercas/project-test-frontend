@@ -1,13 +1,20 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, LinearProgress } from '@material-ui/core';
+import React, { Fragment, memo, useCallback } from 'react';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Grid from '@material-ui/core/Grid';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import { useFormikObservable } from 'hooks/useFormikObservable';
 import * as yup from 'yup';
-import React, { Fragment, memo, useCallback } from 'react';
+
 import productService from 'services/ProductService';
 import TextField from 'components/Shared/Fields/Text';
 import { tap } from 'rxjs/operators';
 import Toast from 'components/Shared/Toast';
 import { logError } from 'helpers/rxjs-operators/logError';
 import { IProduct } from 'interfaces/models/IProduct';
+import DialogActions from '@material-ui/core/DialogActions';
 
 interface IProps {
   opened: boolean;
@@ -26,7 +33,7 @@ const ProductFormDialog = memo((props: IProps) => {
       if (props.product) {
         return productService.edit(model).pipe(
           tap(product => {
-            Toast.show(`Produto Atualizado`);
+            Toast.show('Produto Atualizado');
             props.onComplete(product);
           }),
           logError(true)
@@ -34,7 +41,7 @@ const ProductFormDialog = memo((props: IProps) => {
       } else {
         return productService.save(model).pipe(
           tap(product => {
-            Toast.show(`Produto Salvo`);
+            Toast.show('Produto Salvo');
             props.onComplete(product);
           }),
           logError(true)

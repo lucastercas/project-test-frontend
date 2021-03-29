@@ -1,6 +1,12 @@
 import React, { Fragment, memo, useCallback, useState } from 'react';
 import Card from '@material-ui/core/Card';
-import { Button, CardContent, Grid, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import Table from '@material-ui/core/Table';
+import Button from '@material-ui/core/Button';
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
 
 import TableCellSortable from 'components/Shared/Pagination/TableCellSortable';
 import usePaginationObservable from 'hooks/usePagination';
@@ -15,18 +21,19 @@ import ProductFormDialog from './ProductFormDialog';
 import SearchField from 'components/Shared/Pagination/SearchField';
 import authService from 'services/auth';
 import { IOrderProduct } from 'interfaces/models/IOrderProduct';
+import TablePagination from 'components/Shared/Pagination/TablePagination';
+import CardContent from '@material-ui/core/CardContent/CardContent';
 
 const ProductListPage = memo(() => {
   const [formOpened, setFormOpened] = useState(false);
   const [currentProduct, setCurrentProduct] = useState<IProduct>();
 
-  //To-Do: parametros de busca
   const [params, mergeParams, loading, data, error, , refresh] = usePaginationObservable(
     params => productService.list(params),
     { orderBy: 'name', orderDirection: 'asc' },
     []
   );
-  const { results } = data || ({ total: 0, results: [] } as typeof data);
+  const { total, results } = data || ({ total: 0, results: [] } as typeof data);
 
   const handleCreate = useCallback(() => {
     setCurrentProduct(null);
@@ -78,7 +85,6 @@ const ProductListPage = memo(() => {
             <Grid item xs={12} sm={6} lg={4}>
               <SearchField paginationParams={params} onChange={mergeParams} />
             </Grid>
-
             <Grid item xs={12} sm={'auto'}>
               <Button fullWidth variant='contained' color='primary' onClick={handleCreate}>
                 Adicionar
@@ -91,14 +97,19 @@ const ProductListPage = memo(() => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCellSortable paginationParams={params} disabled={loading} column='name' onChange={() => {}}>
+                <TableCellSortable paginationParams={params} disabled={loading} column='name' onChange={mergeParams}>
                   Nome
                 </TableCellSortable>
                 <TableCell>Descricao</TableCell>
-                <TableCellSortable paginationParams={params} disabled={loading} column='value' onChange={() => {}}>
+                <TableCellSortable paginationParams={params} disabled={loading} column='value' onChange={mergeParams}>
                   Valor
                 </TableCellSortable>
-                <TableCellSortable paginationParams={params} disabled={loading} column='quantity' onChange={() => {}}>
+                <TableCellSortable
+                  paginationParams={params}
+                  disabled={loading}
+                  column='quantity'
+                  onChange={mergeParams}
+                >
                   Quantidade
                 </TableCellSortable>
               </TableRow>
@@ -125,7 +136,7 @@ const ProductListPage = memo(() => {
           </Table>
         </TableWrapper>
 
-        {/* <TablePagination total={total} disabled={loading} paginationParams={params} onChange={mergeParams} /> */}
+        <TablePagination total={total} disabled={loading} paginationParams={params} onChange={mergeParams} />
       </Card>
     </Fragment>
   );

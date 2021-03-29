@@ -9,6 +9,7 @@ import DarkIcon from 'mdi-react/Brightness4Icon';
 import LightIcon from 'mdi-react/Brightness5Icon';
 import ExitToAppIcon from 'mdi-react/ExitToAppIcon';
 import KeyVariantIcon from 'mdi-react/KeyVariantIcon';
+import WalletIcon from 'mdi-react/WalletIcon';
 import React, { memo, useCallback, useContext } from 'react';
 import { useCallbackObservable, useObservable } from 'react-use-observable';
 import { of } from 'rxjs';
@@ -51,6 +52,9 @@ const UserMenu = memo((props: {}) => {
     );
   }, []);
 
+  // To-Do
+  const handleListOrders = useCallback(() => {}, []);
+
   if (!user) {
     return null;
   }
@@ -66,6 +70,7 @@ const UserMenu = memo((props: {}) => {
         handler={themeContext.toogleTheme}
       />
       <OptionItem text='Trocar senha' icon={KeyVariantIcon} handler={handleChangePassword} />
+      <OptionItem text='Meus Pedidos' icon={WalletIcon} handler={handleListOrders} />
       <OptionItem text='Sair' icon={ExitToAppIcon} handler={handleLogout} />
     </DropdownMenu>
   );

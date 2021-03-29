@@ -1,10 +1,16 @@
+import { IOrderProduct } from 'interfaces/models/IOrderProduct';
 import { IProduct } from 'interfaces/models/IProduct';
 import { IPaginationParams } from 'interfaces/pagination';
 import { Observable } from 'rxjs';
 import apiService, { ApiService } from './api';
 
+
 export class ProductService {
   constructor(private apiService: ApiService) {}
+
+  public findById(id: number): Observable<IProduct> {
+    return this.apiService.get(`/app/product/${id}`);
+  }
 
   public list(params: IPaginationParams) {
     const products = this.apiService.get('/app/product', params);

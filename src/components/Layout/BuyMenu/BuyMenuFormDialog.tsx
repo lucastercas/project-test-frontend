@@ -1,8 +1,7 @@
 import { Button, Dialog, DialogActions, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import TableWrapper from 'components/Shared/TableWrapper';
 import { useFormikObservable } from 'hooks/useFormikObservable';
-import usePaginationObservable from 'hooks/usePagination';
-import { IOrder } from 'interfaces/models/IOrder';
+import { IOrderProduct } from 'interfaces/models/IOrderProduct';
 import * as yup from 'yup';
 import React, { memo, useCallback } from 'react';
 import { useObservable } from 'react-use-observable';
@@ -28,7 +27,8 @@ const BuyMenuFormDialog = memo((props: IProps) => {
   const [userId] = useObservable(() => authService.getUser().pipe(map((user: IUserToken) => user.id)), [{}]);
 
   const validationSchema = yup.object().shape({});
-  const formik = useFormikObservable<IOrder[]>({
+
+  const formik = useFormikObservable<IOrderProduct[]>({
     initialValues: [],
     validationSchema,
     onSubmit(model) {
@@ -69,7 +69,7 @@ const BuyMenuFormDialog = memo((props: IProps) => {
 
             <TableBody>
               <EmptyAndErrorMessages colSpan={3} hasData={data.length > 0} onTryAgain={handleRefresh} />
-              {data.map((order: IOrder, index: number) => (
+              {data.map((order: IOrderProduct, index: number) => (
                 <BuyMenuItem key={index} order={order} />
               ))}
             </TableBody>

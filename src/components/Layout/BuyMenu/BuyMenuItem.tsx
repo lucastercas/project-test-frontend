@@ -1,6 +1,6 @@
 import { TableRow, TableCell, List, ListItem, makeStyles } from '@material-ui/core';
 import { Add, Remove } from '@material-ui/icons';
-import { IOrder } from 'interfaces/models/IOrder';
+import { IOrderProduct } from 'interfaces/models/IOrderProduct';
 import React, { memo } from 'react';
 
 const useStyles = makeStyles(theme => ({
@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface IProps {
-  order: IOrder;
+  order: IOrderProduct;
 }
 
 const BuyMenuItem = memo((props: IProps) => {

@@ -1,4 +1,4 @@
-import { IOrder } from 'interfaces/models/IOrder';
+import { IOrderProduct } from 'interfaces/models/IOrderProduct';
 
 export default interface IUserToken {
   id: number;
@@ -7,6 +7,6 @@ export default interface IUserToken {
   lastName?: string;
   roles: string[];
   exp: number;
-  orders: IOrder[];
+  orders: IOrderProduct[];
   fullName: string;
 }

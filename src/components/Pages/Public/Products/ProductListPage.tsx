@@ -14,7 +14,7 @@ import TableWrapper from 'components/Shared/TableWrapper';
 import ProductFormDialog from './ProductFormDialog';
 import SearchField from 'components/Shared/Pagination/SearchField';
 import authService from 'services/auth';
-import { IOrder } from 'interfaces/models/IOrder';
+import { IOrderProduct } from 'interfaces/models/IOrderProduct';
 
 const ProductListPage = memo(() => {
   const [formOpened, setFormOpened] = useState(false);
@@ -26,7 +26,7 @@ const ProductListPage = memo(() => {
     { orderBy: 'name', orderDirection: 'asc' },
     []
   );
-  const { total, results } = data || ({ total: 0, results: [] } as typeof data);
+  const { results } = data || ({ total: 0, results: [] } as typeof data);
 
   const handleCreate = useCallback(() => {
     setCurrentProduct(null);
@@ -40,7 +40,7 @@ const ProductListPage = memo(() => {
 
   // To-Do
   const handleBuy = useCallback((product: IProduct) => {
-    const order: IOrder = {
+    const order: IOrderProduct = {
       productName: product.name,
       productId: product.id,
       value: product.value,

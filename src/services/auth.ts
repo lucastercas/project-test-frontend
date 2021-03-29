@@ -1,6 +1,6 @@
 import { cacheClean } from 'helpers/rxjs-operators/cache';
 import { logError } from 'helpers/rxjs-operators/logError';
-import { IOrder } from 'interfaces/models/IOrder';
+import { IOrderProduct } from 'interfaces/models/IOrderProduct';
 import IUserToken from 'interfaces/tokens/userToken';
 import * as Rx from 'rxjs';
 import { catchError, distinctUntilChanged, map, shareReplay, switchMap } from 'rxjs/operators';
@@ -91,18 +91,19 @@ export class AuthService {
     return this.user$;
   }
 
-  public addToCart(order: IOrder) {
+  public addToCart(product: IOrderProduct) {
+    console.log('Adicionando produto ', product, ' ao carrinho');
     this.getUser().pipe(
       map(user => {
-        if (!user) return null;
+        if (!user) return false;
         if (user.orders === undefined) user.orders = [];
-        user.orders.push(order);
+        user.orders.push(product);
         return user;
       })
-    );
+    ).subscribe();
   }
 
-  public getCart(): Rx.Observable<IOrder[]> {
+  public getCart(): Rx.Observable<IOrderProduct[]> {
     return this.user$.pipe(map(user => user.orders));
   }
 
@@ -110,7 +111,7 @@ export class AuthService {
     this.user$
       .pipe(
         map(user => {
-          if (!user) return null;
+          if (!user) return false;
           user.orders = [];
           return user;
         })

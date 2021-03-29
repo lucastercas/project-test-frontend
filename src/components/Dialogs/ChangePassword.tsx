@@ -60,13 +60,7 @@ const ChangePasswordDialog = memo((props: {}) => {
   }, [formik]);
 
   return (
-    <Dialog
-      disableBackdropClick
-      disableEscapeKeyDown
-      open={opened || false}
-      onExited={handleExited}
-      TransitionComponent={Transition}
-    >
+    <Dialog open={opened || false} onExited={handleExited} TransitionComponent={Transition}>
       {formik.isSubmitting && <LinearProgress color='primary' />}
 
       <form onSubmit={formik.handleSubmit}>

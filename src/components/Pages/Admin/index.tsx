@@ -9,8 +9,11 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import DashboardIndexPage from './Dashboard';
 import SamplePage from './Sample';
 import UserIndexPage from './Users';
-import ProductListPage from './Products/ProductListPage';
 import { enRoles } from 'interfaces/models/user';
+import WalletIcon from 'mdi-react/WalletIcon';
+import ShoppingIcon from 'mdi-react/ShoppingIcon';
+import OrdersListPage from '../Public/Orders/OrdersListPage';
+import ProductListPage from '../Public/Products/ProductListPage';
 
 export const ScrollTopContext = React.createContext<Function>(() => {});
 
@@ -46,7 +49,8 @@ const AdminPage = memo((props: {}) => {
       icon: AccountMultipleIcon
     },
     { path: '/exemplos', display: 'Exemplos', icon: StarIcon },
-    { path: '/produtos', display: 'Produtos', icon: StarIcon }
+    { path: '/produtos', display: 'Produtos', icon: ShoppingIcon },
+    { path: '/pedidos', display: 'Meus Pedidos', icon: WalletIcon }
   ]);
 
   const scrollTop = useCallback(() => setTimeout(() => mainContent.current.scrollTo(0, 0), 100), []);
@@ -61,6 +65,7 @@ const AdminPage = memo((props: {}) => {
               <Route path='/exemplos' component={SamplePage} />
               <Route path='/usuarios' component={UserIndexPage} />
               <Route path='/produtos' component={ProductListPage} />
+              <Route path="/pedidos" component={OrdersListPage} />
               <Route path='/' component={DashboardIndexPage} />
               <Route render={renderRedirect} />
             </Switch>

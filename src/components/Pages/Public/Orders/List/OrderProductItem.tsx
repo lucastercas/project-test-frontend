@@ -11,10 +11,8 @@ interface IProps {
 }
 
 const OrderProductItem = memo((props: IProps) => {
-  const [data] = useObservable(() => productService.findById(props.product.id), []);
+  const [data] = useObservable(() => productService.findById(props.product.productId), []);
   const result = data || ({} as typeof data);
-
-  console.log('Result: ', result);
 
   return (
     <TableRow>
